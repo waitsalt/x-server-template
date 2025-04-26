@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::util::config::CONFIG;
 
 #[derive(Debug, Deserialize, Clone, sqlx::FromRow)]
+#[serde(rename_all = "camelCase")]
 pub struct User {
     pub user_id: i64,
     pub user_name: String,
@@ -19,6 +20,7 @@ pub struct User {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct UserPublic {
     pub user_id: i64,
     pub user_name: String,
@@ -33,7 +35,8 @@ pub struct UserPublic {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct UserSigninPayload {
+#[serde(rename_all = "camelCase")]
+pub struct UserLoginPayload {
     pub user_name: String,
     pub user_password: String,
     pub captcha_image_key: String,
@@ -41,7 +44,8 @@ pub struct UserSigninPayload {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct UserSignupPayload {
+#[serde(rename_all = "camelCase")]
+pub struct UserCreatePayload {
     pub user_name: String,
     pub user_password: String,
     pub user_email: String,

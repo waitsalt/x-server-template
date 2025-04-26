@@ -3,7 +3,7 @@ use nanoid::nanoid;
 use redis::Commands;
 
 use crate::{
-    model::user::{UserAuth, UserClaim, UserRefreshClaim, UserSigninPayload},
+    model::user::{UserAuth, UserClaim, UserCreatePayload, UserRefreshClaim},
     sql,
     util::{
         AppResult,
@@ -16,26 +16,23 @@ use crate::{
     },
 };
 
-pub async fn login(Json(user_signin_payload): Json<UserSigninPayload>) -> AppResult<UserAuth> {
+pub async fn login(Json(user_login_payload): Json<UserCreatePayload>) -> AppResult<UserAuth> {
     let mut con = redis_connect();
 
     // 验证图形验证码
-    let captcha_image_key = format!(
-        "captcha_image_key:{}",
-        user_signin_payload.captcha_image_key
-    );
+    let captcha_image_key = format!("captcha_image_key:{}", user_login_payload.captcha_image_key);
     let captcha_image_value: String = con.get_del(captcha_image_key).unwrap();
-    if captcha_image_value != user_signin_payload.captcha_image_value {
+    if captcha_image_value != user_login_payload.captcha_image_value {
         return Err(AppError::CaptchaImageValueError);
     }
 
     let pool = database_connect();
 
     // 验证用户密码
-    let user = sql::user::user_info_get_by_name(pool, &user_signin_payload.user_name)
+    let user = sql::user::user_info_get_by_name(pool, &user_login_payload.user_name)
         .await
         .unwrap();
-    if user.user_password != user_signin_payload.user_password {
+    if user.user_password != user_login_payload.user_password {
         return Err(AppError::UserPasswordError);
     }
 
