@@ -5,6 +5,7 @@ mod login;
 mod logout;
 mod refresh_access_token;
 mod search;
+mod update;
 
 pub use create::create;
 pub use delete::delete;

@@ -44,7 +44,7 @@ pub async fn captcha_email(user_email: &str) -> Result<(), AppError> {
             .credentials(creds)
             .build(),
         _ => {
-            return Err(AppError::EmailSendFail);
+            return Err(AppError::Other);
         }
     };
 

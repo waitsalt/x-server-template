@@ -49,12 +49,12 @@ where
         parts: &mut axum::http::request::Parts,
         _state: &S,
     ) -> Result<Self, Self::Rejection> {
-        // Extract the token from the authorization header
+        // 从请求头中提取 token
         let TypedHeader(Authorization(bearer)) = parts
             .extract::<TypedHeader<Authorization<Bearer>>>()
             .await
             .map_err(|_| AppError::InvalidToken)?;
-        // Decode the user data
+        // 编码 token 获取用户访问令牌
         let token_data =
             decode::<UserClaim>(bearer.token(), &KEYS.decoding, &Validation::default())
                 .map_err(|_| AppError::InvalidToken)?;
@@ -72,12 +72,12 @@ where
         parts: &mut axum::http::request::Parts,
         _state: &S,
     ) -> Result<Self, Self::Rejection> {
-        // Extract the token from the authorization header
+        // 从请求头中提取 token
         let TypedHeader(Authorization(bearer)) = parts
             .extract::<TypedHeader<Authorization<Bearer>>>()
             .await
             .map_err(|_| AppError::InvalidToken)?;
-        // Decode the user data
+        // 编码 token 获取用户刷新令牌
         let token_data =
             decode::<UserRefreshClaim>(bearer.token(), &KEYS.decoding, &Validation::default())
                 .map_err(|_| AppError::InvalidToken)?;

@@ -8,7 +8,7 @@ use crate::{
 
 pub async fn delete(user_claim: UserClaim, Path(user_id): Path<i64>) -> AppResult<()> {
     if user_claim.data.user_id != user_id {
-        return Err(AppError::InvalidToken);
+        return Err(AppError::PermissionDenied);
     }
     let pool = database_connect();
     let _ = sql::user::user_delete(pool, &user_id).await?;

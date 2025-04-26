@@ -14,7 +14,7 @@ pub struct User {
     pub user_avatar_url: String, // 头像 url
     pub user_level: i8,          // 0
     pub user_status: i8,         // 0. 正常 1. 被封禁 2. 删除
-    pub user_identity: i8,       // 0. 普通 1. 管理员 2. 超级管理员
+    pub user_identity: i8,       // 0. 超级管理员 1. 管理员 2. 普通
     pub user_create_time: DateTime<Utc>,
     pub user_update_time: DateTime<Utc>,
 }
@@ -29,7 +29,22 @@ pub struct UserPublic {
     pub user_avatar_url: String, // 头像 url
     pub user_level: i8,          // 0
     pub user_status: i8,         // 0. 正常 1. 被封禁 2. 删除
-    pub user_identity: i8,       // 0. 普通 1. 管理员 2. 超级管理员
+    pub user_identity: i8,       // 0. 超级管理员 1. 管理员 2. 普通
+    pub user_create_time: DateTime<Utc>,
+    pub user_update_time: DateTime<Utc>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UserUpdatePayload {
+    pub user_id: i64,
+    pub user_name: String,
+    pub user_desc: String,
+    pub user_email: String,
+    pub user_avatar_url: String, // 头像 url
+    pub user_level: i8,          // 0
+    pub user_status: i8,         // 0. 正常 1. 被封禁 2. 删除
+    pub user_identity: i8,       // 0. 超级管理员 1. 管理员 2. 普通
     pub user_create_time: DateTime<Utc>,
     pub user_update_time: DateTime<Utc>,
 }

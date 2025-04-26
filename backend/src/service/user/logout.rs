@@ -12,7 +12,7 @@ pub async fn logout(user_refresh_claim: UserRefreshClaim) -> AppResult<()> {
 
     let token_key = format!("refresh_token:{}", user_id);
 
-    let _: () = redis::cmd("DEL").arg(token_key).query(&mut con).unwrap();
+    let _: () = redis::cmd("DEL").arg(token_key).query(&mut con)?;
 
     Ok(AppResponse::success(None))
 }

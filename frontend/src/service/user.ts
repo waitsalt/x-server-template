@@ -9,12 +9,6 @@ import type {
 } from "@/model/user";
 import { axiosAuth, axiosBase } from "@/util/axios";
 
-// async function user(): Promise<AppResponse<null>> {
-//   const response: AppResponse<null> = await axiosAuth.(
-//   );
-//   return response;
-// }
-
 async function userCreate(
   userCreatePayload: UserCreatePayload,
 ): Promise<AppResponse<null>> {
