@@ -11,6 +11,6 @@ pub async fn delete(user_claim: UserClaim, Path(user_id): Path<i64>) -> AppResul
         return Err(AppError::PermissionDenied);
     }
     let pool = database_connect();
-    let _ = sql::user::user_delete(pool, &user_id).await?;
-    return Ok(AppResponse::success(None));
+    sql::user::user_delete(pool, &user_id).await?;
+    Ok(AppResponse::success(None))
 }

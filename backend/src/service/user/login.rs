@@ -50,8 +50,8 @@ pub async fn login(Json(user_login_payload): Json<UserCreatePayload>) -> AppResu
         .query(&mut con)?;
     // .unwrap();?;
 
-    return Ok(AppResponse::success(Some(UserAuth::new(
+    Ok(AppResponse::success(Some(UserAuth::new(
         access_token,
         refresh_token,
-    ))));
+    ))))
 }

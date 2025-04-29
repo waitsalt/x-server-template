@@ -16,12 +16,8 @@ pub async fn user_info_get_by_id(pool: &Pool<Postgres>, id: &i64) -> SqlResult<U
         .await
         .unwrap();
     match res {
-        Some(user) => {
-            return Ok(user);
-        }
-        None => {
-            return Err(AppError::UserNotExist);
-        }
+        Some(user) => Ok(user),
+        None => Err(AppError::UserNotExist),
     }
 }
 
@@ -39,12 +35,8 @@ pub async fn user_info_get_by_name(pool: &Pool<Postgres>, name: &str) -> SqlResu
         .await
         .unwrap();
     match res {
-        Some(user) => {
-            return Ok(user);
-        }
-        None => {
-            return Err(AppError::UserNotExist);
-        }
+        Some(user) => Ok(user),
+        None => Err(AppError::UserNotExist),
     }
 }
 
