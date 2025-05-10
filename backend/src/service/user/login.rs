@@ -3,7 +3,7 @@ use nanoid::nanoid;
 use redis::Commands;
 
 use crate::{
-    model::user::{UserAuth, UserClaim, UserCreatePayload, UserRefreshClaim},
+    model::user::{UserAuth, UserClaim, UserLoginPayload, UserRefreshClaim},
     sql,
     util::{
         AppResult,
@@ -16,14 +16,14 @@ use crate::{
     },
 };
 
-pub async fn login(Json(user_login_payload): Json<UserCreatePayload>) -> AppResult<UserAuth> {
+pub async fn login(Json(user_login_payload): Json<UserLoginPayload>) -> AppResult<UserAuth> {
     let mut con = redis_connect();
 
     // 验证图形验证码
     let captcha_image_key = format!("captcha_image_key:{}", user_login_payload.captcha_image_key);
-    let captcha_image_value: String = con
-        .get_del(captcha_image_key)
-        .map_err(|_| AppError::RedisActionError)?;
+    let captcha_image_value: String = con.get(&captcha_image_key).unwrap();
+    let _: () = con.del(&captcha_image_key).unwrap();
+    // .map_err(|_| AppError::RedisActionError)?;
     if captcha_image_value != user_login_payload.captcha_image_value {
         return Err(AppError::CaptchaImageValueError);
     }

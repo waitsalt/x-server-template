@@ -12,9 +12,9 @@ pub struct User {
     pub user_password: String,
     pub user_email: String,
     pub user_avatar_url: String, // 头像 url
-    pub user_level: i8,          // 0
-    pub user_status: i8,         // 0. 正常 1. 被封禁 2. 删除
-    pub user_identity: i8,       // 0. 超级管理员 1. 管理员 2. 普通
+    pub user_level: i16,         // 0
+    pub user_status: i16,        // 0. 正常 1. 被封禁 2. 删除
+    pub user_identity: i16,      // 0. 超级管理员 1. 管理员 2. 普通
     pub user_create_time: DateTime<Utc>,
     pub user_update_time: DateTime<Utc>,
 }
@@ -27,9 +27,9 @@ pub struct UserPublic {
     pub user_desc: String,
     pub user_email: String,
     pub user_avatar_url: String, // 头像 url
-    pub user_level: i8,          // 0
-    pub user_status: i8,         // 0. 正常 1. 被封禁 2. 删除
-    pub user_identity: i8,       // 0. 超级管理员 1. 管理员 2. 普通
+    pub user_level: i16,         // 0
+    pub user_status: i16,        // 0. 正常 1. 被封禁 2. 删除
+    pub user_identity: i16,      // 0. 超级管理员 1. 管理员 2. 普通
     pub user_create_time: DateTime<Utc>,
     pub user_update_time: DateTime<Utc>,
 }
@@ -42,9 +42,9 @@ pub struct UserUpdatePayload {
     pub user_desc: String,
     pub user_email: String,
     pub user_avatar_url: String, // 头像 url
-    pub user_level: i8,          // 0
-    pub user_status: i8,         // 0. 正常 1. 被封禁 2. 删除
-    pub user_identity: i8,       // 0. 超级管理员 1. 管理员 2. 普通
+    pub user_level: i16,         // 0
+    pub user_status: i16,        // 0. 正常 1. 被封禁 2. 删除
+    pub user_identity: i16,      // 0. 超级管理员 1. 管理员 2. 普通
     pub user_create_time: DateTime<Utc>,
     pub user_update_time: DateTime<Utc>,
 }
@@ -71,6 +71,25 @@ pub struct UserCreatePayload {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct UserChangePasswordPayload {
+    pub old: String,
+    pub new: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UserChangeAvatarUrlPayload {
+    pub old: String,
+    pub new: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UserChangeEmailPayload {
+    pub user_email: String,
+    pub captcha_email: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct UserSearchPayload {
     pub keyword: String,
 }
@@ -90,6 +109,7 @@ pub struct UserRefreshClaim {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct UserAuth {
     pub access_token: String,
     pub refresh_token: String,

@@ -1,4 +1,5 @@
 use axum::Json;
+use redis::Commands;
 
 use crate::{
     model::user::UserCreatePayload,
@@ -16,6 +17,7 @@ pub async fn create(Json(user_create_payload): Json<UserCreatePayload>) -> AppRe
     }
 
     let pool = database_connect();
+
     // 查询用户名是否存在
     sql::user::user_name_is_exist(pool, &user_create_payload.user_name).await?;
 
@@ -26,16 +28,14 @@ pub async fn create(Json(user_create_payload): Json<UserCreatePayload>) -> AppRe
     let mut con = redis_connect();
 
     let captcha_email_key = format!("captcha_email_key:{}", user_create_payload.user_email);
-    let captcha_email_value: String = redis::cmd("GET")
-        .arg(captcha_email_key.clone())
-        .query(&mut con)?;
+    let captcha_email_value: String = con.get(&captcha_email_key)?;
 
     if captcha_email_value != user_create_payload.captcha_email {
         return Err(AppError::CaptchaEmailValueError);
     }
 
     // 邮箱验证码使用后失效
-    let _: () = redis::cmd("DEL").arg(captcha_email_key).query(&mut con)?;
+    let _: () = con.del(&captcha_email_key)?;
 
     // 新建用户
     sql::user::user_create(

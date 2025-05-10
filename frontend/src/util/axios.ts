@@ -3,7 +3,7 @@ import axios from "axios";
 
 // 普通资源
 const axiosBase = axios.create({
-  baseURL: "http://localhost:8080/api/v0",
+  baseURL: "http://localhost:8000/api/v0",
   timeout: 0,
 });
 
@@ -22,7 +22,7 @@ axiosBase.interceptors.response.use(
 
 // 认证资源
 const axiosAuth = axios.create({
-  baseURL: "http://localhost:8080/api/v0",
+  baseURL: "http://localhost:8000/api/v0",
   timeout: 0,
 });
 
@@ -48,7 +48,7 @@ axiosAuth.interceptors.response.use(
 
 // 刷新认证资源
 const axiosAuthRefresh = axios.create({
-  baseURL: "http://localhost:8080/api/v0",
+  baseURL: "http://localhost:8000/api/v0",
   timeout: 0,
 });
 

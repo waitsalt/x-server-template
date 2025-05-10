@@ -7,9 +7,10 @@ import type {
   UserSearchPayload,
   UserUpdatePayload,
 } from "@/model/user";
+import { useUserStore } from "@/store/user";
 import { axiosAuth, axiosBase } from "@/util/axios";
 
-async function userCreate(
+async function postUserCreate(
   userCreatePayload: UserCreatePayload,
 ): Promise<AppResponse<null>> {
   const response: AppResponse<null> = await axiosBase.post(
@@ -44,7 +45,7 @@ async function userSearch(
   return response;
 }
 
-async function userLogin(
+async function postUserLogin(
   userLoginPayload: UserLoginPayload,
 ): Promise<AppResponse<UserAuth>> {
   const response: AppResponse<UserAuth> = await axiosBase.post(
@@ -54,27 +55,36 @@ async function userLogin(
   return response;
 }
 
-async function userLogout(): Promise<AppResponse<null>> {
+async function getUserLogout(): Promise<AppResponse<null>> {
+  const userStore = useUserStore();
+  userStore.userAuth = {
+    accessToken: "",
+    refreshToken: "",
+  };
   const response: AppResponse<null> = await axiosAuth.get(`/user/logout`);
   return response;
 }
 
 async function userInfo(userId: string): Promise<AppResponse<UserPublic>> {
-  const response: AppResponse<UserPublic> = await axiosBase.get(`/user/${userId}`);
+  const response: AppResponse<UserPublic> = await axiosBase.get(
+    `/user/${userId}`,
+  );
   return response;
 }
 
-async function userRefreshToken(userId: string): Promise<AppResponse<UserAuth>> {
+async function userRefreshToken(
+  userId: string,
+): Promise<AppResponse<UserAuth>> {
   const response: AppResponse<UserAuth> = await axiosAuth.post(`/user/refresh`);
   return response;
 }
 
 export {
-  userCreate,
+  postUserCreate,
   userDelete,
   userUpdate,
   userSearch,
-  userLogin,
-  userLogout,
-  userInfo
+  postUserLogin,
+  getUserLogout,
+  userInfo,
 };
