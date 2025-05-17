@@ -1,7 +1,4 @@
-mod model;
-mod route;
-mod service;
-mod sql;
+mod module;
 mod util;
 
 use util::config::CONFIG;
@@ -15,7 +12,7 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(&address)
         .await
         .expect("address bind error");
-    let router = route::init();
+    let router = module::route::init();
     tracing::info!("Server start: http://{}", address);
     axum::serve(listener, router).await.expect("app run error")
 }

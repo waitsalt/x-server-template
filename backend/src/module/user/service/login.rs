@@ -3,15 +3,15 @@ use nanoid::nanoid;
 use redis::Commands;
 
 use crate::{
-    model::user::{UserAuth, UserClaim, UserLoginPayload, UserRefreshClaim},
-    sql,
+    module::{
+        model::AppResult,
+        user::{
+            auth::{sign, sign_resfresh},
+            model::{User, UserAuth, UserClaim, UserLoginPayload, UserRefreshClaim},
+        },
+    },
     util::{
-        AppResult,
-        auth::{sign, sign_resfresh},
-        config::CONFIG,
-        database::database_connect,
-        error::AppError,
-        redis::redis_connect,
+        config::CONFIG, database::database_connect, error::AppError, redis::redis_connect,
         response::AppResponse,
     },
 };
@@ -31,7 +31,22 @@ pub async fn login(Json(user_login_payload): Json<UserLoginPayload>) -> AppResul
     let pool = database_connect();
 
     // 验证用户密码
-    let user = sql::user::user_info_get_by_name(pool, &user_login_payload.user_name).await?;
+    let sql = "
+        select
+            *
+        from
+            \"user\"
+        where
+            user_name = $1
+        ";
+    let user: User = sqlx::query_as(sql)
+        .bind(&user_login_payload.user_name)
+        .fetch_one(pool)
+        .await
+        .unwrap();
+    if user.user_status == 2 {
+        return Err(AppError::UserIsDeleted);
+    }
     if user.user_password != user_login_payload.user_password {
         return Err(AppError::UserPasswordError);
     }
@@ -42,13 +57,13 @@ pub async fn login(Json(user_login_payload): Json<UserLoginPayload>) -> AppResul
 
     let refresh_token_key = format!("refresh_token:{}", random_data);
     let refresh_token_duration = CONFIG.auth.refresh_token_duration;
-    let _: () = redis::cmd("SET")
-        .arg(refresh_token_key)
-        .arg(user.user_id)
-        .arg("EX")
-        .arg(refresh_token_duration * 3600 * 24)
-        .query(&mut con)?;
-    // .unwrap();?;
+    let _: () = con
+        .set_ex(
+            refresh_token_key,
+            user.user_id,
+            (refresh_token_duration * 3600 * 24) as u64,
+        )
+        .unwrap();
 
     Ok(AppResponse::success(Some(UserAuth::new(
         access_token,

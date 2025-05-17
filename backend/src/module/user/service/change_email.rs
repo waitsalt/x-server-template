@@ -2,12 +2,14 @@ use axum::Json;
 use redis::Commands;
 
 use crate::{
-    model::user::{UserChangeEmailPayload, UserClaim},
-    sql,
-    util::{
-        AppResult, database::database_connect, error::AppError, redis::redis_connect,
-        response::AppResponse,
+    module::{
+        model::AppResult,
+        user::{
+            model::{UserChangeEmailPayload, UserClaim},
+            repository,
+        },
     },
+    util::{error::AppError, redis::redis_connect, response::AppResponse},
 };
 
 pub async fn change_email(
@@ -22,10 +24,8 @@ pub async fn change_email(
     if captcha_email != user_change_email_payload.captcha_email {
         return Err(AppError::CaptchaEmailValueError);
     }
-    let pool = database_connect();
-    sql::user::update_email(
-        pool,
-        &user_chaim.data.user_id,
+    repository::update_user_set_user_email_where_user_id(
+        user_chaim.data.user_id,
         &user_change_email_payload.user_email,
     )
     .await?;

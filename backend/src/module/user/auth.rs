@@ -1,5 +1,7 @@
-use super::{config::CONFIG, error::AppError};
-use crate::model::user::{UserClaim, UserRefreshClaim};
+use crate::{
+    module::user::model::{UserClaim, UserRefreshClaim},
+    util::{config::CONFIG, error::AppError},
+};
 
 use axum::{RequestPartsExt, extract::FromRequestParts};
 use axum_extra::{
