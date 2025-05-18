@@ -3,16 +3,16 @@ use nanoid::nanoid;
 use redis::Commands;
 
 use crate::{
+    common::{
+        config::CONFIG, database::database_connect, error::AppError, redis::redis_connect,
+        response::AppResponse,
+    },
     module::{
         model::AppResult,
         user::{
             auth::{sign, sign_resfresh},
             model::{User, UserAuth, UserClaim, UserLoginPayload, UserRefreshClaim},
         },
-    },
-    util::{
-        config::CONFIG, database::database_connect, error::AppError, redis::redis_connect,
-        response::AppResponse,
     },
 };
 

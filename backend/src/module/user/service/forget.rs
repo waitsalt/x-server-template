@@ -2,12 +2,12 @@ use axum::Json;
 use redis::Commands;
 
 use crate::{
+    common::{
+        database::database_connect, error::AppError, redis::redis_connect, response::AppResponse,
+    },
     module::{
         model::AppResult,
         user::model::{User, UserForgetPayload},
-    },
-    util::{
-        database::database_connect, error::AppError, redis::redis_connect, response::AppResponse,
     },
 };
 

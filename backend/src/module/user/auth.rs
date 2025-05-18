@@ -1,6 +1,6 @@
 use crate::{
+    common::{config::CONFIG, error::AppError},
     module::user::model::{UserClaim, UserRefreshClaim},
-    util::{config::CONFIG, error::AppError},
 };
 
 use axum::{RequestPartsExt, extract::FromRequestParts};

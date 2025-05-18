@@ -1,6 +1,7 @@
 use axum::Json;
 
 use crate::{
+    common::{error::AppError, response::AppResponse},
     module::{
         model::AppResult,
         user::{
@@ -8,7 +9,6 @@ use crate::{
             repository,
         },
     },
-    util::{error::AppError, response::AppResponse},
 };
 
 pub async fn change_password(

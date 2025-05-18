@@ -1,12 +1,12 @@
+mod common;
 mod module;
-mod util;
 
-use util::config::CONFIG;
+use common::config::CONFIG;
 
 #[tokio::main]
 async fn main() {
     // 初始化项目功能模块
-    util::init().await;
+    common::init().await;
 
     let address = format!("{}:{}", CONFIG.server.address, CONFIG.server.port);
     let listener = tokio::net::TcpListener::bind(&address)

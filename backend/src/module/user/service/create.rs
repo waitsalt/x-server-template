@@ -2,11 +2,11 @@ use axum::Json;
 use redis::Commands;
 
 use crate::{
+    common::{error::AppError, redis::redis_connect, response::AppResponse},
     module::{
         model::AppResult,
         user::{model::UserCreatePayload, repository},
     },
-    util::{error::AppError, redis::redis_connect, response::AppResponse},
 };
 
 pub async fn create(Json(user_create_payload): Json<UserCreatePayload>) -> AppResult<()> {

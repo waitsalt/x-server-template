@@ -1,6 +1,6 @@
 use crate::{
+    common::{redis::redis_connect, response::AppResponse},
     module::{model::AppResult, user::model::UserRefreshClaim},
-    util::{redis::redis_connect, response::AppResponse},
 };
 
 pub async fn logout(user_refresh_claim: UserRefreshClaim) -> AppResult<()> {

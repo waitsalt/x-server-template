@@ -1,11 +1,11 @@
 use axum::extract::Path;
 
 use crate::{
+    common::{error::AppError, response::AppResponse},
     module::{
         model::AppResult,
         user::{model::UserClaim, repository},
     },
-    util::{error::AppError, response::AppResponse},
 };
 
 pub async fn delete(user_claim: UserClaim, Path(user_id): Path<i64>) -> AppResult<()> {

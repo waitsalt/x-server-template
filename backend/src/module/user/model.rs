@@ -1,7 +1,7 @@
 use chrono::{DateTime, Duration, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::util::config::CONFIG;
+use crate::common::config::CONFIG;
 
 #[derive(Debug, Deserialize, Clone, sqlx::FromRow)]
 #[serde(rename_all = "camelCase")]

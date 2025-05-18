@@ -1,11 +1,11 @@
 use axum::extract::Path;
 
 use crate::{
+    common::response::AppResponse,
     module::{
         model::AppResult,
         user::{model::UserPublic, repository},
     },
-    util::response::AppResponse,
 };
 
 pub async fn info(Path(user_id): Path<i64>) -> AppResult<UserPublic> {

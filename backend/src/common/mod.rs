@@ -1,9 +1,7 @@
 pub mod config;
 pub mod database;
-pub mod email;
 pub mod error;
 pub mod logger;
-pub mod phone;
 pub mod redis;
 pub mod response;
 

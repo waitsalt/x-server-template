@@ -1,8 +1,7 @@
 use std::env;
-
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
 
-use crate::util::config::CONFIG;
+use crate::common::config::CONFIG;
 
 pub async fn init() {
     if env::var_os("RUST_LOG").is_none() {

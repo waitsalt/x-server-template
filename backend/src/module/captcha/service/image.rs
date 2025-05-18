@@ -3,8 +3,8 @@ use nanoid::nanoid;
 use redis::Commands;
 
 use crate::{
+    common::{redis::redis_connect, response::AppResponse},
     module::{captcha::model::CaptchaImageResponse, model::AppResult},
-    util::{redis::redis_connect, response::AppResponse},
 };
 
 pub async fn image() -> AppResult<CaptchaImageResponse> {

@@ -2,8 +2,8 @@ use once_cell::sync::Lazy;
 use sqlx::{Pool, Postgres};
 
 use crate::{
+    common::{database::database_connect, error::AppError},
     module::model::SqlResult,
-    util::{database::database_connect, error::AppError},
 };
 
 use super::model::User;

@@ -2,6 +2,7 @@ use axum::Json;
 use redis::Commands;
 
 use crate::{
+    common::{error::AppError, redis::redis_connect, response::AppResponse},
     module::{
         model::AppResult,
         user::{
@@ -9,7 +10,6 @@ use crate::{
             repository,
         },
     },
-    util::{error::AppError, redis::redis_connect, response::AppResponse},
 };
 
 pub async fn change_email(

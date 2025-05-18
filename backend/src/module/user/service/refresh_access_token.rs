@@ -1,4 +1,5 @@
 use crate::{
+    common::{redis::redis_connect, response::AppResponse},
     module::{
         model::AppResult,
         user::{
@@ -7,7 +8,6 @@ use crate::{
             repository,
         },
     },
-    util::{redis::redis_connect, response::AppResponse},
 };
 
 pub async fn refresh_access_token(user_refresh_claim: UserRefreshClaim) -> AppResult<String> {
